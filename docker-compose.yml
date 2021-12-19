@@ -1,0 +1,60 @@
+version: '3.6'
+
+services:
+  mariadb:
+    image: jbergstroem/mariadb-alpine:latest
+    container_name: mysql
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "1"
+      MYSQL_INITDB_SKIP_TZINFO: "1"
+      MYSQL_CHARSET: "utf8"
+      MYSQL_COLLATION: "utf8_general_ci"
+    volumes: 
+      - db:/var/lib/mysql:rw
+    ports:
+      - "3306:3306"
+    networks:
+     - wpnetwork
+
+  redis: 
+    image: redis:latest
+    container_name: redis
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - 6379:6379
+    networks:
+      - wpnetwork
+
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    image: auto-wp.local:development
+    container_name: webserver
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      ENV: ${WP_ENV}
+      FQDN: ${WP_HOME}
+    volumes:
+      - ./site/:/var/www/html
+    ports:
+      - "80:80"
+    depends_on: 
+      - mariadb
+    networks:
+      - wpnetwork
+
+volumes:
+  db:
+
+networks:
+  wpnetwork:
+    driver: bridge
