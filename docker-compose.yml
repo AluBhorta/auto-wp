@@ -35,8 +35,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development
-    image: auto-wp.local:development
+      target: ${DOCKER_ENV_TARGET}
+    image: ghcr.io/alubhorta/auto-wp.local:${DOCKER_ENV_TARGET}
     container_name: webserver
     restart: unless-stopped
     env_file: .env
