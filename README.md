@@ -1,4 +1,6 @@
-# AWS CI/CD using IaC for Wordpress
+# auto-wp
+
+Automated Wordpress using AWS CodePipeline and IaC.
 
 ## usage
 

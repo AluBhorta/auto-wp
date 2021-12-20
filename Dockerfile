@@ -10,18 +10,18 @@ RUN cp /etc/nginx/templates/no-ssl-fastcgi.conf /etc/nginx/sites-available/httpd
 WORKDIR /var/www/html
 
 # Docker multi-stage for different environments
-#   docker build --target development -t namespace/auto-wp.local:development . 
+#   docker build --target development -t namespace/example.com:development . 
 #       EQUAL to running docker-compose up -d --build
-#   docker build --target production -t namespace/auto-wp.local:production .
+#   docker build --target production -t namespace/example.com:production .
 #       OR use an external build tool
 FROM builder AS development
     ENV ENV=development
-    RUN sed -i 's|auto-wp.local|DEVELOPMENT|g' /etc/nginx/sites-available/httpd.conf ; \
+    RUN sed -i 's|example.com|localhost|g' /etc/nginx/sites-available/httpd.conf ; \
         ln -s /etc/nginx/sites-available/* /etc/nginx/sites-enabled/
 
 FROM builder AS production
     ENV ENV=production
     COPY --chown=www-data ./site/ /var/www/html
-    RUN sed -i 's|auto-wp.local|PRODUCTION|g' /etc/nginx/sites-available/httpd.conf ; \
+    RUN sed -i 's|example.com|auto-wp.alubhorta.com|g' /etc/nginx/sites-available/httpd.conf ; \
         ln -s /etc/nginx/sites-available/* /etc/nginx/sites-enabled/ ; \
         chmod +x /var/www/html/poststart.sh
