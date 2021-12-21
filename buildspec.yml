@@ -7,6 +7,8 @@ phases:
   pre_build:
     commands:
       - echo Running Pre-Build script on `date`
+      - echo pwd - `pwd`
+      - echo ls - `ls -lash`
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - REPOSITORY_URI=$ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$REPOSITORY_NAME
