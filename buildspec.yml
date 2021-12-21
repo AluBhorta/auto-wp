@@ -8,6 +8,7 @@ phases:
     commands:
       - echo Running Pre-Build script on `date`
       - echo "default region - $AWS_DEFAULT_REGION"
+      - ACCOUNT_ID=665186350589
       - echo "registry uri - $ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
       - echo Logging in to Amazon ECR...
       # - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
