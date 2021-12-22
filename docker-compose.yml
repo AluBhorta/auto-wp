@@ -22,7 +22,7 @@ services:
      - wpnetwork
 
   redis: 
-    image: redis:latest
+    image: redis:alpine
     container_name: redis
     restart: unless-stopped
     env_file: .env
