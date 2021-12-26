@@ -23,3 +23,7 @@ site/vendor
 
 # WP-CLI
 site/wp-cli.local.yml
+
+# others
+.git
+.vscode
