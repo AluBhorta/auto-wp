@@ -19,13 +19,13 @@ RUN composer install
 FROM builder AS development
 ENV ENV=development
 COPY --chown=www-data ./site/ /var/www/html
-RUN sed -i 's|example.com|localhost|g' /etc/nginx/sites-available/httpd.conf ; \
+RUN sed -i 's|example.com|localhost|g' /etc/nginx/sites-available/httpd.conf && \
     ln -s /etc/nginx/sites-available/* /etc/nginx/sites-enabled/
 
 
 FROM builder AS production
 ENV ENV=production
 COPY --chown=www-data ./site/ /var/www/html
-RUN sed -i 's|example.com|auto-wp.alubhorta.com|g' /etc/nginx/sites-available/httpd.conf ; \
-    ln -s /etc/nginx/sites-available/* /etc/nginx/sites-enabled/ 
-#         chmod +x /var/www/html/poststart.sh
+RUN sed -i 's|example.com|auto-wp.alubhorta.com|g' /etc/nginx/sites-available/httpd.conf && \
+    ln -s /etc/nginx/sites-available/* /etc/nginx/sites-enabled/ && \
+    chmod +x /var/www/html/poststart.sh
