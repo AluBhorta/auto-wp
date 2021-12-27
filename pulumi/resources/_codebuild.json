@@ -1,0 +1,9 @@
+{
+  "resources": [
+    {
+      "type": "aws:codebuild/project:Project",
+      "name": "auto-wp-codebuild-project",
+      "id": "auto-wp-codebuild-project"
+    }
+  ]
+}

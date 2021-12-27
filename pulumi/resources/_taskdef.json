@@ -1,0 +1,9 @@
+{
+  "resources": [
+    {
+      "type": "aws:ecs/taskDefinition:TaskDefinition",
+      "name": "auto-wp-tdef:11",
+      "id": "arn:aws:ecs:ap-south-1:665186350589:task-definition/auto-wp-tdef:11"
+    }
+  ]
+}
