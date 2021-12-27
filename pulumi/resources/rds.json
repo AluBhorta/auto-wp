@@ -1,0 +1,14 @@
+{
+  "resources": [
+    {
+      "type": "aws:rds/cluster:Cluster",
+      "name": "test-wp-db",
+      "id": "test-wp-db"
+    },
+    {
+      "type": "aws:rds/clusterInstance:ClusterInstance",
+      "name": "test-wp-db-instance-1",
+      "id": "test-wp-db-instance-1"
+    }
+  ]
+}
