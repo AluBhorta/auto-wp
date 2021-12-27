@@ -1,0 +1,14 @@
+{
+  "resources": [
+    {
+      "type": "aws:acm/certificate:Certificate",
+      "name": "auto-wp.alubhorta.com",
+      "id": "arn:aws:acm:ap-south-1:665186350589:certificate/51b5be97-32d1-4376-8695-a8d6ec760e80"
+    },
+    {
+      "type": "aws:alb/loadBalancer:LoadBalancer",
+      "name": "auto-wp-lb",
+      "id": "arn:aws:elasticloadbalancing:ap-south-1:665186350589:loadbalancer/app/auto-wp-lb/b87b54e3e997047e"
+    }
+  ]
+}
