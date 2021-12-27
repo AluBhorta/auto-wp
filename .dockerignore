@@ -27,3 +27,5 @@ site/wp-cli.local.yml
 # others
 .git
 .vscode
+
+**/node_modules
