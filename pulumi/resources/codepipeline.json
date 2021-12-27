@@ -1,0 +1,9 @@
+{
+  "resources": [
+    {
+      "type": "aws:codepipeline/pipeline:Pipeline",
+      "name": "auto-wp-pipeline",
+      "id": "auto-wp-pipeline"
+    }
+  ]
+}

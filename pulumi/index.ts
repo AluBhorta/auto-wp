@@ -4,3 +4,4 @@ import * as aws from "@pulumi/aws";
 import "./networking";
 import "./rds";
 import "./lb"
+import "./ecs"

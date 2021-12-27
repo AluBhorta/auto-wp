@@ -1,0 +1,14 @@
+{
+  "resources": [
+    {
+      "type": "aws:ecs/cluster:Cluster",
+      "name": "auto-wp-ecs-cluster",
+      "id": "auto-wp-ecs-cluster"
+    },
+    {
+      "type": "aws:ecs/service:Service",
+      "name": "auto-wp-service",
+      "id": "auto-wp-ecs-cluster/auto-wp-service"
+    }
+  ]
+}
