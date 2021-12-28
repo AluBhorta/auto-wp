@@ -17,7 +17,7 @@ const test_wp_db = new aws.rds.Cluster("test-wp-db", {
 });
 const test_wp_db_instance_1 = new aws.rds.ClusterInstance("test-wp-db-instance-1", {
     autoMinorVersionUpgrade: true,
-    clusterIdentifier: "test-wp-db",
+    clusterIdentifier: test_wp_db.id,
     copyTagsToSnapshot: false,
     engine: "aurora-mysql",
     instanceClass: "db.t2.small",

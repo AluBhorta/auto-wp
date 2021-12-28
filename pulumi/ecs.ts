@@ -18,12 +18,10 @@ const auto_wp_ecs_cluster = new aws.ecs.Cluster(
 const auto_wp_service = new aws.ecs.Service(
   "auto-wp-service",
   {
-    capacityProviderStrategies: [
-      {
-        capacityProvider: "FARGATE",
-        weight: 1,
-      },
-    ],
+    name: "auto-wp-service",
+    taskDefinition: "auto-wp-tdef:14",
+    schedulingStrategy: "REPLICA",
+    waitForSteadyState: false,
     deploymentMaximumPercent: 200,
     deploymentMinimumHealthyPercent: 100,
     desiredCount: 1,
@@ -38,18 +36,20 @@ const auto_wp_service = new aws.ecs.Service(
           "arn:aws:elasticloadbalancing:ap-south-1:665186350589:targetgroup/auto-wp-tg/6f271bcc4a920c33",
       },
     ],
-    name: "auto-wp-service",
     networkConfiguration: {
       assignPublicIp: true,
       securityGroups: ["sg-09ff63909b7aacc5c"],
       subnets: ["subnet-006293e929a925ee0", "subnet-026b07de9c771de15"],
     },
-    schedulingStrategy: "REPLICA",
+    capacityProviderStrategies: [
+      {
+        capacityProvider: "FARGATE",
+        weight: 1,
+      },
+    ],
     tags: {
       Project: "auto-wp",
     },
-    taskDefinition: "auto-wp-tdef:11",
-    waitForSteadyState: false,
   },
   {
     protect: true,

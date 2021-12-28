@@ -4,6 +4,7 @@ import * as aws from "@pulumi/aws";
 const auto_wp_alubhorta_com = new aws.acm.Certificate(
   "auto-wp.alubhorta.com",
   {
+    domainName: "auto-wp.alubhorta.com",
     tags: {
       Project: "auto-wp",
     },
