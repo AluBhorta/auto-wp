@@ -32,5 +32,3 @@ RUN sed -i 's|example.com|auto-wp.alubhorta.com|g' /etc/nginx/sites-available/ht
 
 VOLUME ["/var/www/html"]
 
-ENTRYPOINT [ "/bin/sh", "-c" ]
-CMD [ "df", "-h", ]
