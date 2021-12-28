@@ -25,6 +25,7 @@ const auto_wp_lb = new aws.alb.LoadBalancer(
     idleTimeout: 60,
     loadBalancerType: "application",
     name: "auto-wp-lb",
+    // subnets: [], TODO:
     tags: {
       Project: "auto-wp",
     },

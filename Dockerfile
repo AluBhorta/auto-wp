@@ -31,3 +31,5 @@ RUN sed -i 's|example.com|auto-wp.alubhorta.com|g' /etc/nginx/sites-available/ht
     chmod +x /var/www/html/poststart.sh
 
 VOLUME ["/var/www/html"]
+
+ENTRYPOINT [ "/bin/sh", "-c", "'df -h && lsblk && ls -lash /var/www/html'" ]

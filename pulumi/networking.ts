@@ -11,6 +11,7 @@ const auto_wp_vpc = new aws.ec2.Vpc(
       Project: "auto-wp",
     },
     cidrBlock: "10.2.0.0/16",
+    enableDnsHostnames: true
   },
   {
     protect: true,
