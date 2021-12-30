@@ -19,7 +19,7 @@ const auto_wp_service = new aws.ecs.Service(
   "auto-wp-service",
   {
     name: "auto-wp-service",
-    taskDefinition: "wp-tdef:13",
+    taskDefinition: "wp-tdef:24",
     schedulingStrategy: "REPLICA",
     waitForSteadyState: false,
     deploymentMaximumPercent: 200,
@@ -55,3 +55,5 @@ const auto_wp_service = new aws.ecs.Service(
     protect: true,
   }
 );
+
+// import "./taskdef";

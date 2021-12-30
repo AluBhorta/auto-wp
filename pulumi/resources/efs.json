@@ -1,0 +1,9 @@
+{
+  "resources": [
+    {
+      "type": "aws:efs/fileSystem:FileSystem",
+      "name": "auto-wp-efs",
+      "id": "fs-02f39393065acee4e"
+    }
+  ]
+}

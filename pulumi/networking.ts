@@ -11,7 +11,7 @@ const auto_wp_vpc = new aws.ec2.Vpc(
       Project: "auto-wp",
     },
     cidrBlock: "10.2.0.0/16",
-    enableDnsHostnames: true
+    enableDnsHostnames: true,
   },
   {
     protect: true,
@@ -174,7 +174,7 @@ const auto_wp_web_sg = new aws.ec2.SecurityGroup(
     name: "auto-wp-web-sg",
     ingress: [
       {
-        cidrBlocks: ["103.59.178.246/32"],
+        cidrBlocks: ["0.0.0.0/0"],
         protocol: "tcp",
         fromPort: 22,
         toPort: 22,
@@ -235,7 +235,20 @@ const auto_wp_db_sg = new aws.ec2.SecurityGroup(
     protect: true,
   }
 );
-
+const auto_wp_efs_sg = new aws.ec2.SecurityGroup(
+  "auto-wp-efs-sg",
+  {
+    description: "SG for EFS ",
+    name: "auto-wp-efs-sg",
+    revokeRulesOnDelete: false,
+    tags: {
+      Project: "auto-wp",
+    },
+  },
+  {
+    protect: true,
+  }
+);
 const _default = new aws.ec2.SecurityGroup(
   "default",
   {
