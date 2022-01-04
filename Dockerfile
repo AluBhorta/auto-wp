@@ -10,6 +10,7 @@ RUN cp /etc/nginx/templates/no-ssl-fastcgi.conf /etc/nginx/sites-available/httpd
 
 COPY --chown=www-data ./site/composer.* /var/www/html/
 WORKDIR /var/www/html
+USER www-data
 RUN composer install
 
 # Docker multi-stage for different environments
