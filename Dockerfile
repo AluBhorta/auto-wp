@@ -28,7 +28,8 @@ ENV ENV=production
 COPY --chown=www-data ./site/ /var/www/html
 RUN sed -i 's|example.com|auto-wp.alubhorta.com|g' /etc/nginx/sites-available/httpd.conf && \
     ln -s /etc/nginx/sites-available/* /etc/nginx/sites-enabled/ && \
-    chmod +x /var/www/html/poststart.sh
+    chmod +x /var/www/html/poststart.sh && \
+    /var/www/html/poststart.sh
 
 VOLUME ["/var/www/html"]
 
