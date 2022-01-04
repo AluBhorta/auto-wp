@@ -15,11 +15,16 @@ const auto_wp_ecs_cluster = new aws.ecs.Cluster(
   }
 );
 
+// import { auto_wp_taskdef } from "./taskdef";
+
 const auto_wp_service = new aws.ecs.Service(
   "auto-wp-service",
   {
     name: "auto-wp-service",
-    taskDefinition: "wp-tdef:24",
+    taskDefinition: "wp-tdef", // TODO: fetch the latest taskdef
+    /* taskDefinition doc:
+    Family and revision (family:revision) or full ARN of the task definition that you want to run in your service. Required unless using the EXTERNAL deployment controller. If a revision is not specified, the latest ACTIVE revision is used.
+    */
     schedulingStrategy: "REPLICA",
     waitForSteadyState: false,
     deploymentMaximumPercent: 200,
@@ -55,5 +60,3 @@ const auto_wp_service = new aws.ecs.Service(
     protect: true,
   }
 );
-
-// import "./taskdef";
