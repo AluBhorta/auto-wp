@@ -1,0 +1,9 @@
+{
+  "resources": [
+    {
+      "type": "aws:ecs/taskDefinition:TaskDefinition",
+      "name": "wp-tdef:27",
+      "id": "arn:aws:ecs:ap-south-1:665186350589:task-definition/wp-tdef:27"
+    }
+  ]
+}
