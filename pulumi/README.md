@@ -45,31 +45,6 @@ echo 'import "./rds";' >> index.ts
 
 ## Issues
 
-- ecs taskdef import issue
-
-  - import json
-
-    ```json
-    {
-      "type": "aws:ecs/taskDefinition:TaskDefinition",
-      "name": "auto-wp-tdef:11",
-      "id": "arn:aws:ecs:ap-south-1:665186350589:task-definition/auto-wp-tdef:11"
-    }
-    ```
-
-  - error log
-
-    ```log
-    error: internal error: Error: Missing attribute separator
-
-      on anonymous.pp line 10:
-      9:     tags ={
-      11:         ecs:taskDefinition:createdFrom = "ecs-console-v2",
-
-    Expected a newline or comma to mark the beginning of the next attribute.
-
-    ```
-
 - codebuild import issue
 
   - import json
