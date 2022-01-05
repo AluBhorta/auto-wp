@@ -1,5 +1,5 @@
 import * as aws from "@pulumi/aws";
-import { auto_wp_efs } from "./efs";
+// import { auto_wp_efs } from "./efs";
 
 export const auto_wp_taskdef = new aws.ecs.TaskDefinition("auto_wp_taskdef", {
   cpu: "512",
@@ -13,7 +13,7 @@ export const auto_wp_taskdef = new aws.ecs.TaskDefinition("auto_wp_taskdef", {
     {
       name: "site_root",
       efsVolumeConfiguration: {
-        fileSystemId: auto_wp_efs.id,
+        fileSystemId: "fs-02f39393065acee4e",
         rootDirectory: "/",
         transitEncryption: "ENABLED",
         transitEncryptionPort: 2999,
