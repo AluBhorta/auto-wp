@@ -1,6 +1,16 @@
 {
   "resources": [
     {
+      "type": "aws:rds/clusterParameterGroup:ClusterParameterGroup",
+      "name": "auto-wp-db-cluster-pg",
+      "id": "auto-wp-db-cluster-pg"
+    },
+    {
+      "type": "aws:rds/parameterGroup:ParameterGroup",
+      "name": "auto-wp-db-pg",
+      "id": "auto-wp-db-pg"
+    },
+    {
       "type": "aws:rds/cluster:Cluster",
       "name": "test-wp-db",
       "id": "test-wp-db"
