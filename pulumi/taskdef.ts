@@ -1,6 +1,8 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
+import { auto_wp_efs } from "./efs";
+
 export const wp_taskdef = new aws.ecs.TaskDefinition(
   "wp-tdef-27",
   {
@@ -129,7 +131,7 @@ export const wp_taskdef = new aws.ecs.TaskDefinition(
           authorizationConfig: {
             iam: "DISABLED",
           },
-          fileSystemId: "fs-02f39393065acee4e",
+          fileSystemId: auto_wp_efs.id,
           rootDirectory: "/",
           transitEncryption: "DISABLED",
         },

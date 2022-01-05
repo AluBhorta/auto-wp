@@ -21,8 +21,7 @@ const auto_wp_service = new aws.ecs.Service(
   "auto-wp-service",
   {
     name: "auto-wp-service",
-    taskDefinition: pulumi.interpolate`${wp_taskdef.family}:${wp_taskdef.revision}`,
-    // taskDefinition: "wp-tdef",
+    taskDefinition: pulumi.interpolate`${wp_taskdef.family}`, // NOTE: not adding revision because that often changes due to CD
     schedulingStrategy: "REPLICA",
     waitForSteadyState: false,
     deploymentMaximumPercent: 200,
