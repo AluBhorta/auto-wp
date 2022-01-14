@@ -54,6 +54,22 @@ const auto_wp_pipeline = new aws.codepipeline.Pipeline(
             runOrder: 1,
             version: "1",
           },
+          {
+            provider: "GitHub",
+            version: "1",
+            name: "GithubV1",
+            category: "Source",
+            owner: "ThirdParty",
+            runOrder: 1,
+            configuration: {
+              Branch: "master",
+              OAuthToken: process.env.GITHUB_ACCESS_TOKEN || "",
+              Owner: "AluBhorta",
+              Repo: "auto-wp",
+              PollForSourceChanges: "false",
+            },
+            outputArtifacts: ["GitHubSource"],
+          },
         ],
       },
       {
