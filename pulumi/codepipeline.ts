@@ -6,20 +6,6 @@ const cicd_bucket = new aws.s3.Bucket("codepipeline-ap-south-1-281994180331", {
   forceDestroy: false,
 });
 
-const auto_wp_github_connection = new aws.codestarconnections.Connection(
-  "auto-wp-github-connection",
-  {
-    name: "auto-wp-gh-con",
-    providerType: "GitHub",
-    tags: {
-      Project: "auto-wp",
-    },
-  },
-  {
-    protect: true,
-  }
-);
-
 const auto_wp_pipeline = new aws.codepipeline.Pipeline(
   "auto-wp-pipeline",
   {
@@ -35,25 +21,6 @@ const auto_wp_pipeline = new aws.codepipeline.Pipeline(
       {
         name: "Source",
         actions: [
-          {
-            category: "Source",
-            configuration: {
-              BranchName: "master",
-              ConnectionArn: auto_wp_github_connection.arn,
-              FullRepositoryId: "AluBhorta/auto-wp",
-              OutputArtifactFormat: "CODE_ZIP",
-            },
-            inputArtifacts: [],
-            name: "Source",
-            namespace: "SourceVariables",
-            outputArtifacts: ["SourceArtifact"],
-            owner: "AWS",
-            provider: "CodeStarSourceConnection",
-            region: "ap-south-1",
-            roleArn: "",
-            runOrder: 1,
-            version: "1",
-          },
           {
             provider: "GitHub",
             version: "1",
@@ -97,19 +64,19 @@ const auto_wp_pipeline = new aws.codepipeline.Pipeline(
         name: "Deploy",
         actions: [
           {
+            name: "Deploy",
             category: "Deploy",
+            inputArtifacts: ["BuildArtifact"],
+            provider: "ECS",
             configuration: {
               ClusterName: "auto-wp-ecs-cluster",
               DeploymentTimeout: "10",
               FileName: "imagedefinitions.json",
               ServiceName: "auto-wp-service",
             },
-            inputArtifacts: ["BuildArtifact"],
-            name: "Deploy",
             namespace: "DeployVariables",
             outputArtifacts: [],
             owner: "AWS",
-            provider: "ECS",
             region: "ap-south-1",
             roleArn: "",
             runOrder: 1,
