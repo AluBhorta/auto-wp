@@ -33,7 +33,7 @@ const auto_wp_pipeline = new aws.codepipeline.Pipeline(
               OAuthToken: process.env.GITHUB_ACCESS_TOKEN || "",
               Owner: "AluBhorta",
               Repo: "auto-wp",
-              PollForSourceChanges: "false",
+              PollForSourceChanges: "true",
             },
             outputArtifacts: ["GitHubV1Src"],
           },
