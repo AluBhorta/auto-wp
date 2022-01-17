@@ -46,7 +46,7 @@ const codebuild_project = new aws.codebuild.Project(
     artifacts: { type: "CODEPIPELINE" },
     source: {
       type: "CODEPIPELINE",
-      buildspec: "./buildspec.yaml", // or wherever your buildspec lives. Note you could target different buildspecs for the same repo
+      // buildspec: "buildspec.yaml", // or wherever your buildspec lives. Note you could target different buildspecs for the same repo
     },
     // logsConfig: { cloudwatchLogs: { groupName: "", streamName: "" } },
   },
