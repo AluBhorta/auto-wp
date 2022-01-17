@@ -1,6 +1,8 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
+import { codebuild_policy } from "./iam";
+
 const cicd_bucket = new aws.s3.Bucket("codepipeline-ap-south-1-281994180331", {
   acl: "private",
   forceDestroy: false,
@@ -8,7 +10,7 @@ const cicd_bucket = new aws.s3.Bucket("codepipeline-ap-south-1-281994180331", {
 
 // TODO: create separate roles for codebuild and codepipeline
 
-const cicd_role = new aws.iam.Role("cicd_role", {
+const codebuild_role = new aws.iam.Role("codebuild_role", {
   assumeRolePolicy: JSON.stringify({
     Version: "2012-10-17",
     Statement: [
@@ -22,19 +24,21 @@ const cicd_role = new aws.iam.Role("cicd_role", {
       },
     ],
   }),
-  managedPolicyArns: [
-    "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess",
-    "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-    "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess",
-  ],
+  managedPolicyArns: [codebuild_policy.arn], // NOTE: this is suggested on pulumi refresh after codebuild_policy_attachment is created
 });
+
+const codebuild_policy_attachment = new aws.iam.RolePolicyAttachment(
+  "codebuild_policy_attachment",
+  {
+    role: codebuild_role,
+    policyArn: codebuild_policy.arn,
+  }
+);
 
 const codebuild_project = new aws.codebuild.Project(
   "auto_wp-codebuild-project1",
   {
-    serviceRole: cicd_role.arn, // TODO !!!
-    description: "Hey! This is my description!",
+    serviceRole: codebuild_role.arn, // TODO !!!
     buildTimeout: 10, // in minutes
     environment: {
       computeType: "BUILD_GENERAL1_SMALL",
@@ -50,7 +54,7 @@ const codebuild_project = new aws.codebuild.Project(
     },
     // logsConfig: { cloudwatchLogs: { groupName: "", streamName: "" } },
   },
-  { dependsOn: [cicd_role] }
+  { dependsOn: [codebuild_role] }
 );
 
 const auto_wp_pipeline = new aws.codepipeline.Pipeline(
