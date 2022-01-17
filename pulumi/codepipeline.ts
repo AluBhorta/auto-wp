@@ -1,39 +1,15 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
-import { codebuild_policy } from "./iam";
+import { codebuild_role, codepipeline_role } from "./iam";
 
 const cicd_bucket = new aws.s3.Bucket("codepipeline-ap-south-1-281994180331", {
+  // TODO: shift to separate file and change id
   acl: "private",
   forceDestroy: false,
 });
 
-// TODO: create separate roles for codebuild and codepipeline
-
-const codebuild_role = new aws.iam.Role("codebuild_role", {
-  assumeRolePolicy: JSON.stringify({
-    Version: "2012-10-17",
-    Statement: [
-      {
-        Action: "sts:AssumeRole",
-        Principal: {
-          Service: "codebuild.amazonaws.com",
-        },
-        Effect: "Allow",
-        Sid: "",
-      },
-    ],
-  }),
-  managedPolicyArns: [codebuild_policy.arn], // NOTE: this is suggested on pulumi refresh after codebuild_policy_attachment is created
-});
-
-const codebuild_policy_attachment = new aws.iam.RolePolicyAttachment(
-  "codebuild_policy_attachment",
-  {
-    role: codebuild_role,
-    policyArn: codebuild_policy.arn,
-  }
-);
+// codebuild
 
 const codebuild_project = new aws.codebuild.Project(
   "auto_wp-codebuild-project1",
@@ -50,12 +26,13 @@ const codebuild_project = new aws.codebuild.Project(
     artifacts: { type: "CODEPIPELINE" },
     source: {
       type: "CODEPIPELINE",
-      // buildspec: "buildspec.yaml", // or wherever your buildspec lives. Note you could target different buildspecs for the same repo
     },
     // logsConfig: { cloudwatchLogs: { groupName: "", streamName: "" } },
   },
   { dependsOn: [codebuild_role] }
 );
+
+// codepipeline
 
 const auto_wp_pipeline = new aws.codepipeline.Pipeline(
   "auto-wp-pipeline",
@@ -66,8 +43,7 @@ const auto_wp_pipeline = new aws.codepipeline.Pipeline(
       type: "S3",
     },
     name: "auto-wp-pipeline",
-    roleArn:
-      "arn:aws:iam::665186350589:role/service-role/AWSCodePipelineServiceRole-ap-south-1-auto-wp-pipeline",
+    roleArn: codepipeline_role.arn,
     stages: [
       {
         name: "Source",
