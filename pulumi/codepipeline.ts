@@ -3,12 +3,6 @@ import * as aws from "@pulumi/aws";
 
 import { codebuild_role, codepipeline_role } from "./iam";
 
-const cicd_bucket = new aws.s3.Bucket("codepipeline-ap-south-1-281994180331", {
-  // TODO: shift to separate file and change id
-  acl: "private",
-  forceDestroy: false,
-});
-
 // codebuild
 
 const codebuild_project = new aws.codebuild.Project(
@@ -33,6 +27,11 @@ const codebuild_project = new aws.codebuild.Project(
 );
 
 // codepipeline
+
+const cicd_bucket = new aws.s3.Bucket("codepipeline-ap-south-1-281994180331", {
+  acl: "private",
+  forceDestroy: false,
+});
 
 const auto_wp_pipeline = new aws.codepipeline.Pipeline(
   "auto-wp-pipeline",

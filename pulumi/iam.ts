@@ -1,6 +1,8 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
+// iam for codebuild
+
 const codebuild_policy = new aws.iam.Policy(
   "codebuild_policy",
   {
@@ -105,6 +107,8 @@ const codebuild_policy_attachment = new aws.iam.RolePolicyAttachment(
     policyArn: codebuild_policy.arn,
   }
 );
+
+// iam for codepipeline
 
 const codepipeline_policy = new aws.iam.Policy("codepipeline_policy", {
   description: "Policy used in trust relationship with CodePipeline",
