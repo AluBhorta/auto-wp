@@ -6,6 +6,53 @@ const cicd_bucket = new aws.s3.Bucket("codepipeline-ap-south-1-281994180331", {
   forceDestroy: false,
 });
 
+// TODO: create separate roles for codebuild and codepipeline
+
+const cicd_role = new aws.iam.Role("cicd_role", {
+  assumeRolePolicy: JSON.stringify({
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Action: "sts:AssumeRole",
+        Principal: {
+          Service: "codebuild.amazonaws.com",
+        },
+        Effect: "Allow",
+        Sid: "",
+      },
+    ],
+  }),
+  managedPolicyArns: [
+    "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess",
+    "arn:aws:iam::aws:policy/CloudWatchFullAccess",
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+    "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess",
+  ],
+});
+
+const codebuild_project = new aws.codebuild.Project(
+  "auto_wp-codebuild-project1",
+  {
+    serviceRole: cicd_role.arn, // TODO !!!
+    description: "Hey! This is my description!",
+    buildTimeout: 10, // in minutes
+    environment: {
+      computeType: "BUILD_GENERAL1_SMALL",
+      image: "aws/codebuild/amazonlinux2-x86_64-standard:3.0", // other images are available
+      type: "LINUX_CONTAINER",
+      privilegedMode: true,
+      environmentVariables: [],
+    },
+    artifacts: { type: "CODEPIPELINE" },
+    source: {
+      type: "CODEPIPELINE",
+      buildspec: "./buildspec.yaml", // or wherever your buildspec lives. Note you could target different buildspecs for the same repo
+    },
+    // logsConfig: { cloudwatchLogs: { groupName: "", streamName: "" } },
+  },
+  { dependsOn: [cicd_role] }
+);
+
 const auto_wp_pipeline = new aws.codepipeline.Pipeline(
   "auto-wp-pipeline",
   {
@@ -47,7 +94,7 @@ const auto_wp_pipeline = new aws.codepipeline.Pipeline(
             category: "Build",
             inputArtifacts: ["GitHubV1Src"],
             configuration: {
-              ProjectName: "auto-wp-codebuild-project",
+              ProjectName: codebuild_project.name, //"auto-wp-codebuild-project",
             },
             namespace: "BuildVariables",
             owner: "AWS",
