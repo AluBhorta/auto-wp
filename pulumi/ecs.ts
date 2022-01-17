@@ -2,6 +2,13 @@ import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
 import { auto_wp_efs } from "./efs";
+import { ecsTaskExecutionRole } from "./iam";
+import { auto_wp_tg } from "./lb";
+import {
+  auto_wp_az1_subnet,
+  auto_wp_az2_subnet,
+  auto_wp_web_sg,
+} from "./networking";
 
 const ECS_TASKDEF_FAMILY = "wp-tdef";
 
@@ -131,7 +138,7 @@ export const wp_taskdef = new aws.ecs.TaskDefinition(
       },
     ]),
     cpu: "512",
-    executionRoleArn: "arn:aws:iam::665186350589:role/ecsTaskExecutionRole",
+    executionRoleArn: ecsTaskExecutionRole.arn,
     family: ECS_TASKDEF_FAMILY,
     memory: "1024",
     requiresCompatibilities: ["FARGATE"],
@@ -179,14 +186,13 @@ const auto_wp_service = new aws.ecs.Service(
       {
         containerName: "auto-wp",
         containerPort: 80,
-        targetGroupArn:
-          "arn:aws:elasticloadbalancing:ap-south-1:665186350589:targetgroup/auto-wp-tg/6f271bcc4a920c33",
+        targetGroupArn: auto_wp_tg.arn,
       },
     ],
     networkConfiguration: {
       assignPublicIp: true,
-      securityGroups: ["sg-09ff63909b7aacc5c"],
-      subnets: ["subnet-006293e929a925ee0", "subnet-026b07de9c771de15"],
+      securityGroups: [auto_wp_web_sg.id],
+      subnets: [auto_wp_az1_subnet.id, auto_wp_az2_subnet.id],
     },
     capacityProviderStrategies: [
       {

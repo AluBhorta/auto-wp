@@ -1,7 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
-const auto_wp_vpc = new aws.ec2.Vpc(
+export const auto_wp_vpc = new aws.ec2.Vpc(
   "auto-wp-vpc",
   {
     enableDnsSupport: true,
@@ -34,7 +34,7 @@ const auto_wp_igw = new aws.ec2.InternetGateway(
 );
 
 // subnets
-const auto_wp_az1_subnet = new aws.ec2.Subnet(
+export const auto_wp_az1_subnet = new aws.ec2.Subnet(
   "auto-wp-az1-subnet",
   {
     assignIpv6AddressOnCreation: false,
@@ -51,7 +51,7 @@ const auto_wp_az1_subnet = new aws.ec2.Subnet(
     protect: true,
   }
 );
-const auto_wp_az2_subnet = new aws.ec2.Subnet(
+export const auto_wp_az2_subnet = new aws.ec2.Subnet(
   "auto-wp-az2-subnet",
   {
     assignIpv6AddressOnCreation: false,
@@ -68,7 +68,7 @@ const auto_wp_az2_subnet = new aws.ec2.Subnet(
     protect: true,
   }
 );
-const auto_wp_az3_subnet = new aws.ec2.Subnet(
+export const auto_wp_az3_subnet = new aws.ec2.Subnet(
   "auto-wp-az3-subnet",
   {
     assignIpv6AddressOnCreation: false,
@@ -130,7 +130,7 @@ const auto_wp_subnet3_rt_assoc = new aws.ec2.RouteTableAssociation(
 );
 
 // SGs
-const auto_wp_lb_sg = new aws.ec2.SecurityGroup(
+export const auto_wp_lb_sg = new aws.ec2.SecurityGroup(
   "auto-wp-lb-sg",
   {
     description: "SG for internet facing ALB",
@@ -167,7 +167,7 @@ const auto_wp_lb_sg = new aws.ec2.SecurityGroup(
     protect: true,
   }
 );
-const auto_wp_web_sg = new aws.ec2.SecurityGroup(
+export const auto_wp_web_sg = new aws.ec2.SecurityGroup(
   "auto-wp-web-sg",
   {
     description: "SG for web services on ecs",

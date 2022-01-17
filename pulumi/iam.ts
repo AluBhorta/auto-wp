@@ -1,6 +1,35 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
+// iam for ecs task
+
+export const ecsTaskExecutionRole = new aws.iam.Role(
+  "ecsTaskExecutionRole",
+  {
+    assumeRolePolicy: JSON.stringify({
+      Version: "2008-10-17",
+      Statement: [
+        {
+          Sid: "",
+          Effect: "Allow",
+          Principal: { Service: "ecs-tasks.amazonaws.com" },
+          Action: "sts:AssumeRole",
+        },
+      ],
+    }),
+    forceDetachPolicies: false,
+    maxSessionDuration: 3600,
+    name: "ecsTaskExecutionRole",
+    managedPolicyArns: [
+      "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+    ],
+    path: "/",
+  },
+  {
+    protect: true,
+  }
+);
+
 // iam for codebuild
 
 const codebuild_policy = new aws.iam.Policy(

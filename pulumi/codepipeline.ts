@@ -8,7 +8,7 @@ import { codebuild_role, codepipeline_role } from "./iam";
 const codebuild_project = new aws.codebuild.Project(
   "auto_wp-codebuild-project1",
   {
-    serviceRole: codebuild_role.arn, // TODO !!!
+    serviceRole: codebuild_role.arn,
     buildTimeout: 10, // in minutes
     environment: {
       computeType: "BUILD_GENERAL1_SMALL",
