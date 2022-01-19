@@ -4,6 +4,7 @@ import * as aws from "@pulumi/aws";
 require('dotenv').config()
 
 import "./networking";
+import "./dns";
 import "./rds";
 import "./lb";
 import "./ecs";
