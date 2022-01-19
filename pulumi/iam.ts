@@ -1,7 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
-// iam for ecs task
+// iam for ecs
 
 export const ecsTaskExecutionRole = new aws.iam.Role(
   "ecsTaskExecutionRole",
@@ -24,6 +24,32 @@ export const ecsTaskExecutionRole = new aws.iam.Role(
       "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
     ],
     path: "/",
+  },
+  {
+    protect: true,
+  }
+);
+
+const ecsAutoscaleRole = new aws.iam.Role(
+  "ecsAutoscaleRole",
+  {
+    assumeRolePolicy: JSON.stringify({
+      Version: "2012-10-17",
+      Statement: [
+        {
+          Effect: "Allow",
+          Principal: { Service: "application-autoscaling.amazonaws.com" },
+          Action: "sts:AssumeRole",
+        },
+      ],
+    }),
+    forceDetachPolicies: false,
+    maxSessionDuration: 3600,
+    name: "ecsAutoscaleRole",
+    path: "/",
+    managedPolicyArns: [
+      "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole",
+    ],
   },
   {
     protect: true,

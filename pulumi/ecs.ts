@@ -208,3 +208,41 @@ const auto_wp_service = new aws.ecs.Service(
     protect: true,
   }
 );
+
+// ecs service autoscaling
+
+const ecs_autoscaling_target = new aws.appautoscaling.Target(
+  "ecs-autoscaling-target",
+  {
+    maxCapacity: 4,
+    minCapacity: 1,
+    resourceId: "service/auto-wp-ecs-cluster/auto-wp-service",
+    scalableDimension: "ecs:service:DesiredCount",
+    serviceNamespace: "ecs",
+  },
+  {
+    protect: true,
+  }
+);
+
+const ecs_autoscaling_policy = new aws.appautoscaling.Policy(
+  "ecs-autoscaling-policy",
+  {
+    name: "auto-wp-ecs-autoscale-policy",
+    policyType: "TargetTrackingScaling",
+    resourceId: ecs_autoscaling_target.resourceId,
+    scalableDimension: ecs_autoscaling_target.scalableDimension,
+    serviceNamespace: ecs_autoscaling_target.serviceNamespace,
+    targetTrackingScalingPolicyConfiguration: {
+      predefinedMetricSpecification: {
+        predefinedMetricType: "ECSServiceAverageCPUUtilization",
+      },
+      scaleInCooldown: 300,
+      scaleOutCooldown: 300,
+      targetValue: 75,
+    },
+  },
+  {
+    protect: true,
+  }
+);
