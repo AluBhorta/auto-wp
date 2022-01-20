@@ -1,8 +1,9 @@
 # FROM lightbulb
 #   https://github.com/cloudbitsio/lightbulb-alpine
 #
-# FROM docker.io/cloudbitsio/lightbulb-alpine:latest AS builder     # using private repo as dockerhub has rate limits: https://www.docker.com/increase-rate-limit
-FROM 665186350589.dkr.ecr.ap-south-1.amazonaws.com/lightbulb-alpine:latest AS builder
+FROM docker.io/cloudbitsio/lightbulb-alpine:latest AS builder     
+# using private repo as dockerhub has rate limits: https://www.docker.com/increase-rate-limit
+# FROM 665186350589.dkr.ecr.ap-south-1.amazonaws.com/lightbulb-alpine:latest AS builder
 
 # Configure Filament
 RUN cp /etc/nginx/templates/no-ssl-fastcgi.conf /etc/nginx/sites-available/httpd.conf ; \
