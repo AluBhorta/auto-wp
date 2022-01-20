@@ -11,7 +11,12 @@ import {
   auto_wp_web_sg,
 } from "./networking";
 
+// shared constants (solves some async output issues)
+
+const ECR_REPO_NAME = "auto-wp";
 const ECS_TASKDEF_FAMILY = "wp-tdef";
+
+// ecs cluster
 
 const auto_wp_ecs_cluster = new aws.ecs.Cluster(
   "auto-wp-ecs-cluster",
@@ -27,7 +32,40 @@ const auto_wp_ecs_cluster = new aws.ecs.Cluster(
   }
 );
 
-export const wp_taskdef = new aws.ecs.TaskDefinition(
+// ecr repo
+
+const ecr_repo_kms_key = new aws.kms.Key(
+  "ecr_repo_kms_key",
+  {
+    bypassPolicyLockoutSafetyCheck: false,
+    customerMasterKeySpec: "SYMMETRIC_DEFAULT",
+    enableKeyRotation: true,
+    isEnabled: true,
+    keyUsage: "ENCRYPT_DECRYPT",
+  },
+  {
+    protect: true,
+  }
+);
+
+export const auto_wp_repo = new aws.ecr.Repository(
+  "auto-wp",
+  {
+    imageTagMutability: "MUTABLE",
+    name: ECR_REPO_NAME,
+    encryptionConfigurations: [
+      {
+        encryptionType: "KMS",
+        kmsKey: ecr_repo_kms_key.arn,
+      },
+    ],
+  },
+  {
+    protect: true,
+  }
+);
+
+const wp_taskdef = new aws.ecs.TaskDefinition(
   "wp-tdef-27",
   {
     containerDefinitions: JSON.stringify([
@@ -58,7 +96,7 @@ export const wp_taskdef = new aws.ecs.TaskDefinition(
           { name: "WP_SITEURL", value: process.env.WP_SITEURL },
         ],
         essential: true,
-        image: "665186350589.dkr.ecr.ap-south-1.amazonaws.com/auto-wp",
+        image: `${process.env.AWS_IAM_ACCOUNT_ID}.dkr.ecr.ap-south-1.amazonaws.com/${ECR_REPO_NAME}`,
         links: [],
         logConfiguration: {
           logDriver: "awslogs",
@@ -148,7 +186,7 @@ export const wp_taskdef = new aws.ecs.TaskDefinition(
       Project: "auto-wp",
       "ecs:taskDefinition:createdFrom": "ecs-console-v2",
       "ecs:taskDefinition:stackId":
-        "arn:aws:cloudformation:ap-south-1:665186350589:stack/ECS-Console-V2-TaskDefinition-3df623b8-0219-4aa1-ab73-542f9c61a54c/487b6620-6238-11ec-8227-062cc17e076a",
+        "arn:aws:cloudformation:ap-south-1:665186350589:stack/ECS-Console-V2-TaskDefinition-3df623b8-0219-4aa1-ab73-542f9c61a54c/487b6620-6238-11ec-8227-062cc17e076a", // NOTE: this mihgt cause errors/issues when using across aws accounts
     },
     volumes: [
       {
