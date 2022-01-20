@@ -1,7 +1,8 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
-require('dotenv').config()
+import { config } from "dotenv";
+config({ path: "./.prod.env" });
 
 import "./networking";
 import "./dns";
