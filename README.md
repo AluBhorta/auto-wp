@@ -106,3 +106,7 @@ Wordpress with CI/CD using AWS CodePipeline and infrastructure automation (IaC) 
 - the `ap-south-1` AWS region has been used and hard coded throughout the project. you may need to change it according to your needs.
 - check [issues](issues.md) faced during project.
 - learn about [importing resources](import.md) from aws console to pulumi.
+
+## License
+
+BSD 3-Clause
