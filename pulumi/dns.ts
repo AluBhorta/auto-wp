@@ -15,7 +15,7 @@ export const cloudbits_hosted_zone = new aws.route53.Zone(
 );
 
 // cert
-const auto_wp_cloudbits_cert = new aws.acm.Certificate(
+export const auto_wp_cloudbits_cert = new aws.acm.Certificate(
   "auto-wp-cloudbits-cert",
   {
     domainName: "auto-wp.cloudbits.io",

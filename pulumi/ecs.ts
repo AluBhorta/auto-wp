@@ -7,6 +7,7 @@ import { auto_wp_tg } from "./lb";
 import {
   auto_wp_az1_subnet,
   auto_wp_az2_subnet,
+  auto_wp_az3_subnet,
   auto_wp_web_sg,
 } from "./networking";
 
@@ -137,6 +138,7 @@ export const wp_taskdef = new aws.ecs.TaskDefinition(
         volumesFrom: [],
       },
     ]),
+    networkMode: "awsvpc",
     cpu: "512",
     executionRoleArn: ecsTaskExecutionRole.arn,
     family: ECS_TASKDEF_FAMILY,
@@ -192,7 +194,11 @@ const auto_wp_service = new aws.ecs.Service(
     networkConfiguration: {
       assignPublicIp: true,
       securityGroups: [auto_wp_web_sg.id],
-      subnets: [auto_wp_az1_subnet.id, auto_wp_az2_subnet.id],
+      subnets: [
+        auto_wp_az1_subnet.id,
+        auto_wp_az2_subnet.id,
+        auto_wp_az3_subnet.id,
+      ],
     },
     capacityProviderStrategies: [
       {

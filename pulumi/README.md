@@ -101,6 +101,35 @@ echo 'import "./rds";' >> index.ts
         }
     ```
 
+- error while importing ALB listeners
+  - input
+    ```json
+      {
+        "resources": [
+          {
+            "type": "aws:alb/listener:Listener",
+            "name": "alb_http_listener",
+            "id": "arn:aws:elasticloadbalancing:ap-south-1:665186350589:listener/app/auto-wp-lb/b87b54e3e997047e/3b80524390559133"
+          },
+          {
+            "type": "aws:alb/listener:Listener",
+            "name": "alb_https_listener",
+            "id": "arn:aws:elasticloadbalancing:ap-south-1:665186350589:listener/app/auto-wp-lb/b87b54e3e997047e/18299061c4c261c5"
+          }
+        ]
+      }    
+    ```
+  - error message
+    ```log
+      Diagnostics:
+        pulumi:pulumi:Stack (auto-wp-pulumi-ts-dev):
+          error: preview failed
+      
+        aws:alb:Listener (alb_https_listener):
+          error: aws:alb/listener:Listener resource 'alb_https_listener' has a problem: expected default_action.0.order to be in the range (1 - 50000), got 0. Examine values at 'Listener.DefaultActions[0].Order'.
+          error: Preview failed: one or more inputs failed to validate      
+    ```
+
 ---
 
 import errors might be related to [this issue](https://github.com/pulumi/pulumi/issues/6146).
@@ -108,3 +137,5 @@ import errors might be related to [this issue](https://github.com/pulumi/pulumi/
 ### NOTE
 
 - ACM certificate validation can be done using pulumi via [CertificateValidation](https://www.pulumi.com/registry/packages/aws/api-docs/acm/certificatevalidation/) (which uses route53), instead of using manual DNS record update
+
+
